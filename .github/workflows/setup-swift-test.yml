@@ -1,0 +1,20 @@
+name: Setup Swift Test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  setup-swift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Swift
+        uses: sonderformat-llc/setup-swift@main
+        with:
+          swift-version: '6.1.1'
+          soft-fail-version-check: 'true'
+
+      - name: Verify Swift version
+        run: swift --version
