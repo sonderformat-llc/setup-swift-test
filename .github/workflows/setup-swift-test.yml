@@ -5,7 +5,12 @@ on:
       - main
 jobs:
   setup-swift:
-    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            os: [ubuntu-24.04, ubuntu-22.04, macos-14, macos-15]
+            swift-version: ['6.1.0', '6.1.1', '6.1.5']
+            soft-fail-version-check: [true, false]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -13,8 +18,8 @@ jobs:
       - name: Setup Swift
         uses: sonderformat-llc/setup-swift@main
         with:
-          swift-version: '6.1.1'
-          soft-fail-version-check: 'true'
+          swift-version: ${{ matrix.swift-version }}
+          soft-fail-version-check: ${{ matrix.soft-fail-version-check }}
 
       - name: Verify Swift version
         run: swift --version
